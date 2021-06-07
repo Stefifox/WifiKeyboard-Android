@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
         final EditText port = findViewById(R.id.portinput);
         final Button connect = findViewById(R.id.connectbutton);
         final TextView status = findViewById(R.id.status);
+
+        final ImageButton mic = findViewById(R.id.micbutton);
 
         status.setText("disconnected");
         status.setTextColor(getColor(R.color.disconnect));
@@ -67,9 +70,40 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if(statusC){
+            mic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(statusC){
+                        request("mute");
+                    }
 
-        }
+                }
+            });
 
+    }
+
+    private void request(String key){
+        final TextView status = findViewById(R.id.status);
+        String reqUrl = url + "/key?value=" + key;
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, reqUrl, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONObject obj = new JSONObject(response.toString());
+                    Toast.makeText(MainActivity.this, "Done", Toast.LENGTH_SHORT).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }}, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println(error);
+                Toast.makeText(MainActivity.this,"Connection error", Toast.LENGTH_SHORT).show();
+                statusC = false;
+                status.setText("disconnected");
+                status.setTextColor(getColor(R.color.disconnect));
+            }
+        });
+        MySingleton.getInstance(MainActivity.this).addToRequestQueue(request);
     }
 }
