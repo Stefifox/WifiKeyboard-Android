@@ -2,6 +2,7 @@ package dev.stefifox.discordkeyboard;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -43,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 url = "http://" + ip.getText() + ":" + port.getText();
-                Toast.makeText(MainActivity.this, url, Toast.LENGTH_SHORT).show();
                 JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url + "/connect", null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -51,25 +51,26 @@ public class MainActivity extends AppCompatActivity {
                             JSONObject obj = new JSONObject(response.toString());
                             JSONArray buttons = new JSONArray(obj.getJSONObject("configs").getJSONArray("buttons").toString());
                             System.out.println(buttons.toString());
-                            Toast.makeText(MainActivity.this, obj.toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_SHORT).show();
                             statusC = true;
                             status.setText("connected");
                             status.setTextColor(getColor(R.color.connected));
+                            buttonList.removeAllViews(); //Clear all views
                             for(int i = 0; i < buttons.length(); i++){
                                 JSONObject temp = buttons.getJSONObject(i);
-                                Button btn = new Button(MainActivity.this);
-                                btn.setText(temp.getString("name"));
+                                Button btn = new Button(MainActivity.this); //Making a button
+                                btn.setText(temp.getString("name")); //Setting Text of button
                                 btn.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
                                         try {
-                                            request(String.valueOf(temp.getInt("id")));
+                                            request(String.valueOf(temp.getInt("id"))); //Adding the request
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
                                     }
                                 });
-                                buttonList.addView(btn);
+                                buttonList.addView(btn); //Add button on view
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
