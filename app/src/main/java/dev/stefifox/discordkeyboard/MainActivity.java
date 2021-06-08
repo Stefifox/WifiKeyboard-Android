@@ -3,12 +3,15 @@ package dev.stefifox.discordkeyboard;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         final Button connect = findViewById(R.id.connectbutton);
         final TextView status = findViewById(R.id.status);
         final LinearLayout buttonList = findViewById(R.id.buttonlist);
+        final ImageView infob = findViewById(R.id.infobutton);
 
         if(!url.equals(loadIp())){
             url = loadIp();
@@ -49,6 +53,17 @@ public class MainActivity extends AppCompatActivity {
 
         status.setText("disconnected");
         status.setTextColor(getColor(R.color.disconnect));
+
+
+        infob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = "https://github.com/Stefifox/WifiKeyboard-Android/blob/main/README.md";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            }
+        });
 
 
         connect.setOnClickListener(new View.OnClickListener() {
