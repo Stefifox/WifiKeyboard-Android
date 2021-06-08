@@ -3,6 +3,7 @@ package dev.stefifox.discordkeyboard;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActionBar;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -37,57 +38,23 @@ public class MainActivity extends AppCompatActivity {
         final TextView status = findViewById(R.id.status);
         final LinearLayout buttonList = findViewById(R.id.buttonlist);
 
+        if(!url.equals(loadIp())){
+            url = loadIp();
+            String[] temp = url.split(":");
+            //System.out.println(temp[1].substring(2) + " " + temp[2]);
+            connectRequest(temp[1].substring(2), temp[2]);
+            ip.setText(temp[1].substring(2));
+            port.setText(temp[2]);
+        }
+
         status.setText("disconnected");
         status.setTextColor(getColor(R.color.disconnect));
+
 
         connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                url = "http://" + ip.getText() + ":" + port.getText();
-                JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url + "/connect", null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONObject obj = new JSONObject(response.toString());
-                            JSONArray buttons = new JSONArray(obj.getJSONObject("configs").getJSONArray("buttons").toString());
-                            System.out.println(buttons.toString());
-                            Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_SHORT).show();
-                            statusC = true;
-                            status.setText("connected");
-                            status.setTextColor(getColor(R.color.connected));
-                            buttonList.removeAllViews(); //Clear all views
-                            for(int i = 0; i < buttons.length(); i++){
-                                JSONObject temp = buttons.getJSONObject(i);
-                                Button btn = new Button(MainActivity.this); //Making a button
-                                btn.setText(temp.getString("name")); //Setting Text of button
-                                btn.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        try {
-                                            request(String.valueOf(temp.getInt("id"))); //Adding the request
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                });
-                                buttonList.addView(btn); //Add button on view
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        System.out.println(error);
-                        Toast.makeText(MainActivity.this,"Connection error", Toast.LENGTH_SHORT).show();
-                        statusC = false;
-                        url = "http://";
-                        status.setText("disconnected");
-                        status.setTextColor(getColor(R.color.disconnect));
-                    }
-                });
-                MySingleton.getInstance(MainActivity.this).addToRequestQueue(request);
+                connectRequest("" + ip.getText(), "" + port.getText());
             }
         });
 
@@ -118,4 +85,74 @@ public class MainActivity extends AppCompatActivity {
         });
         MySingleton.getInstance(MainActivity.this).addToRequestQueue(request);
     }
+
+    private void connectRequest(String ip, String port){
+        //Declaring object
+        final TextView status = findViewById(R.id.status);
+        final LinearLayout buttonList = findViewById(R.id.buttonlist);
+        //Setting URL
+        url = "http://" + ip+ ":" + port;
+        //Setting the request
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url + "/connect", null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONObject obj = new JSONObject(response.toString());
+                    JSONArray buttons = new JSONArray(obj.getJSONObject("configs").getJSONArray("buttons").toString());
+                    System.out.println(buttons.toString());
+                    Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_SHORT).show();
+                    statusC = true;
+                    status.setText("connected");
+                    status.setTextColor(getColor(R.color.connected));
+                    buttonList.removeAllViews(); //Clear all views
+                    save(url);
+                    for(int i = 0; i < buttons.length(); i++){
+                        JSONObject temp = buttons.getJSONObject(i);
+                        Button btn = new Button(MainActivity.this); //Making a button
+                        btn.setText(temp.getString("name")); //Setting Text of button
+                        btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                try {
+                                    request(String.valueOf(temp.getInt("id"))); //Adding the request
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        buttonList.addView(btn); //Add button on view
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println(error);
+                Toast.makeText(MainActivity.this,"Connection error", Toast.LENGTH_SHORT).show();
+                statusC = false;
+                url = "http://";
+                save(url);
+                status.setText("disconnected");
+                status.setTextColor(getColor(R.color.disconnect));
+            }
+        });
+        //Adding request to queue
+        MySingleton.getInstance(MainActivity.this).addToRequestQueue(request);
+    }
+
+    private String loadIp(){
+        SharedPreferences load = getSharedPreferences("ip", MODE_PRIVATE);
+        String url = load.getString("ip_", this.url);
+        return url;
+    }
+
+    private void save (String value){
+        SharedPreferences save = getSharedPreferences("ip", MODE_PRIVATE);
+        SharedPreferences.Editor saveEdit = save.edit();
+        saveEdit.putString("ip_", value);
+        saveEdit.apply();
+    }
+
 }
