@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DiscordKeyboard</string>
+    <string name="app_name">Remote commander</string>
     <string name="connectbtn">Connect</string>
     <string name="yourbuttons">Your buttons</string>
 </resources>
