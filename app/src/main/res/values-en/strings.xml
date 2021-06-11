@@ -1,10 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Remote commander</string>
     <string name="connectbtn">Connect</string>
     <string name="yourbuttons">Your buttons</string>
-    <string name="made" translatable="false">Made by StefifoxApps</string>
     <string name="done">Done</string>
     <string name="c_error">Connection error</string>
     <string name="connected">Connected</string>
-    <string name="disc">Disconnected</string>
+    <string name="disc">Discconnected</string>
 </resources>

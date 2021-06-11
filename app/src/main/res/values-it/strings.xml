@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="connectbtn">Connetti</string>
+    <string name="yourbuttons">I tuoi pulsanti</string>
+    <string name="done">Fatto</string>
+    <string name="c_error">Errore di connessione</string>
+    <string name="connected">Connesso</string>
+    <string name="disc">Disconnesso</string>
+</resources>
