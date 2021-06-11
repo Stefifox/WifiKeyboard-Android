@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         status.setText(getText(R.string.disc));
         status.setTextColor(getColor(R.color.disconnect));
 
-
         infob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
