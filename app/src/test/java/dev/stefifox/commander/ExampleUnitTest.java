@@ -1,4 +1,4 @@
-package dev.stefifox.discordkeyboard;
+package dev.stefifox.commander;
 
 import org.junit.Test;
 

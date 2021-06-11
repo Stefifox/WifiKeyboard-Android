@@ -1,8 +1,7 @@
-package dev.stefifox.discordkeyboard;
+package dev.stefifox.commander;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -10,7 +9,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -51,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
             port.setText(temp[2]);
         }
 
-        status.setText("disconnected");
+        status.setText(getText(R.string.disc));
         status.setTextColor(getColor(R.color.disconnect));
 
 
@@ -84,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     JSONObject obj = new JSONObject(response.toString());
-                    Toast.makeText(MainActivity.this, "Done", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, getText(R.string.done), Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -92,9 +90,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 System.out.println(error);
-                Toast.makeText(MainActivity.this,"Connection error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this,getText(R.string.c_error), Toast.LENGTH_SHORT).show();
                 statusC = false;
-                status.setText("disconnected");
+                status.setText(getText(R.string.disc));
                 status.setTextColor(getColor(R.color.disconnect));
             }
         });
@@ -115,9 +113,9 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject obj = new JSONObject(response.toString());
                     JSONArray buttons = new JSONArray(obj.getJSONObject("configs").getJSONArray("buttons").toString());
                     System.out.println(buttons.toString());
-                    Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, getText(R.string.connected), Toast.LENGTH_SHORT).show();
                     statusC = true;
-                    status.setText("connected");
+                    status.setText(getText(R.string.connected));
                     status.setTextColor(getColor(R.color.connected));
                     buttonList.removeAllViews(); //Clear all views
                     save(url);
@@ -145,11 +143,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 System.out.println(error);
-                Toast.makeText(MainActivity.this,"Connection error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this,getText(R.string.c_error), Toast.LENGTH_SHORT).show();
                 statusC = false;
                 url = "http://";
                 save(url);
-                status.setText("disconnected");
+                status.setText(getText(R.string.disc));
                 status.setTextColor(getColor(R.color.disconnect));
             }
         });

@@ -15,13 +15,13 @@ To make new button you can edit config.json file, in the future we will add an s
 For apply changes save json file and restart server
 
 example of button
-´´´
+´´´´
 {
     "id" : 0,
     "name" : "Test",
     "key" : "k"
 }
-´´´
+´´´´
 
 - id: The id of button, must be unique
 - name: The text on the button in application

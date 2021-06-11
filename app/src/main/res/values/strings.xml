@@ -2,4 +2,9 @@
     <string name="app_name">Remote commander</string>
     <string name="connectbtn">Connect</string>
     <string name="yourbuttons">Your buttons</string>
+    <string name="made">Made by StefifoxApps</string>
+    <string name="done">Done</string>
+    <string name="c_error">Connection error</string>
+    <string name="connected">Connected</string>
+    <string name="disc">Disconnected</string>
 </resources>
