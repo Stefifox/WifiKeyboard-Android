@@ -37,8 +37,11 @@ public class MainActivity extends AppCompatActivity {
         final EditText port = findViewById(R.id.portinput);
         final Button connect = findViewById(R.id.connectbutton);
         final TextView status = findViewById(R.id.status);
+        final TextView footer = findViewById(R.id.madeby);
         final LinearLayout buttonList = findViewById(R.id.buttonlist);
         final ImageView infob = findViewById(R.id.infobutton);
+
+        footer.setText(footer.getText() + " - V. " + BuildConfig.VERSION_NAME);
 
         if(!url.equals(loadIp())){
             url = loadIp();
