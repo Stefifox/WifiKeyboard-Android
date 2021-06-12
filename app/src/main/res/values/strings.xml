@@ -7,4 +7,6 @@
     <string name="c_error">Connection error</string>
     <string name="connected">Connected</string>
     <string name="disc">Disconnected</string>
+    <string name="lowerversion">Please update app</string>
+    <string name="lowerserver">Please update server</string>
 </resources>

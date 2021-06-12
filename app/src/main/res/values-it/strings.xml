@@ -6,4 +6,6 @@
     <string name="c_error">Errore di connessione</string>
     <string name="connected">Connesso</string>
     <string name="disc">Disconnesso</string>
+    <string name="lowerversion">Aggiorna l\'app</string>
+    <string name="lowerserver">Aggiorna il server</string>
 </resources>

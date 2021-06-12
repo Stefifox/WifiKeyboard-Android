@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static String url = "http://";
     public static boolean statusC = false;
+    public static int serverVersionCode = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,15 +66,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 connectRequest("" + ip.getText(), "" + port.getText());
             }
         });
-
-
     }
 
     private void request(String id){
@@ -116,6 +114,17 @@ public class MainActivity extends AppCompatActivity {
                     JSONArray buttons = new JSONArray(obj.getJSONObject("configs").getJSONArray("buttons").toString());
                     System.out.println(buttons.toString());
                     Toast.makeText(MainActivity.this, getText(R.string.connected), Toast.LENGTH_SHORT).show();
+                    if(obj.getInt("version_code") > serverVersionCode){
+                        status.setText(getText(R.string.lowerversion));
+                        status.setTextColor(getColor(R.color.disconnect));
+                        return;
+                    }
+                    if(obj.getInt("version_code") < serverVersionCode){
+                        status.setText(getText(R.string.lowerserver));
+                        status.setTextColor(getColor(R.color.disconnect));
+                        return;
+                    }
+
                     statusC = true;
                     status.setText(getText(R.string.connected));
                     status.setTextColor(getColor(R.color.connected));
